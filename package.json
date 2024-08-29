@@ -1,7 +1,7 @@
 {
-  "name": "starter-template",
+  "name": "battleship",
   "version": "1.0.0",
-  "description": "A starter template with Webpack, ESLint, Prettier, and Webpack Dev Server pre-configured.",
+  "description": "A Battleship game application.",
   "main": "index.js",
   "scripts": {
     "start": "webpack serve --open --config webpack.config.js",
