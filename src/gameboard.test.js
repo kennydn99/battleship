@@ -74,7 +74,7 @@ describe('Gameboard Class', () => {
     gameboard.placeShip(ship, 1, 1, true);
     gameboard.receiveAttack(0, 1);
     expect(ship.hits).toBe(0);
-    expect(gameboard.missedAttacks).toEqual([[0, 1]]);
+    expect(gameboard.board[0][1]).toBe('miss');
   });
 
   test('Gameboard receiveAttack throws an error when inputting out of bounds coordinates', () => {
@@ -97,7 +97,7 @@ describe('Gameboard Class', () => {
     expect(() => gameboard.receiveAttack(0, 0)).toThrow(
       'Position already attacked!'
     );
-    expect(gameboard.missedAttacks).toEqual([[0, 0]]);
+    expect(gameboard.board[0][0]).toBe('miss');
   });
 
   // Tests for allShipsSunk() method

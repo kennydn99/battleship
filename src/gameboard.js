@@ -3,7 +3,6 @@ export default class Gameboard {
     this.board = Array(10)
       .fill(null)
       .map(() => Array(10).fill(''));
-    this.missedAttacks = [];
     this.ships = [];
   }
 
@@ -53,10 +52,7 @@ export default class Gameboard {
     if (x < 0 || x >= this.board.length || y < 0 || y >= this.board[0].length)
       throw new Error('Not a valid attack!');
 
-    if (
-      this.board[x][y] === 'hit' ||
-      this.missedAttacks.some((coord) => coord[0] === x && coord[1] === y)
-    )
+    if (this.board[x][y] === 'hit' || this.board[x][y] === 'miss')
       throw new Error('Position already attacked!');
 
     if (this.board[x][y] !== '') {
@@ -64,7 +60,7 @@ export default class Gameboard {
       ship.hit();
       this.board[x][y] = 'hit';
     } else {
-      this.missedAttacks.push([x, y]);
+      this.board[x][y] = 'miss';
     }
   }
 
@@ -72,4 +68,6 @@ export default class Gameboard {
     if (this.ships.length === 0) return false;
     return this.ships.every((ship) => ship.isSunk());
   }
+
+  // Add a getter for position on board
 }
