@@ -38,6 +38,7 @@ describe('Gameboard Class', () => {
     expect(() => gameboard.placeShip(ship, 8, 1, false)).toThrow(
       'Not a valid position!'
     );
+    expect(gameboard.ships).toEqual([]);
   });
 
   test('Gameboard throws Error when placing ship on an already occupoed cell horizontally', () => {
@@ -54,6 +55,11 @@ describe('Gameboard Class', () => {
     expect(() => gameboard.placeShip(ship2, 1, 1, false)).toThrow(
       'Not a valid position!'
     );
+  });
+
+  test('Gameboard keeps track of ships placed on board', () => {
+    gameboard.placeShip(ship, 1, 1, false);
+    expect(gameboard.ships).toEqual([ship]);
   });
 
   // Test receiveAttack function
@@ -92,5 +98,48 @@ describe('Gameboard Class', () => {
       'Position already attacked!'
     );
     expect(gameboard.missedAttacks).toEqual([[0, 0]]);
+  });
+
+  // Tests for allShipsSunk() method
+  test('Gameboard allShipsSunk reports if all ships are sunk', () => {
+    gameboard.placeShip(ship, 0, 0, true);
+    gameboard.receiveAttack(0, 0);
+    gameboard.receiveAttack(0, 1);
+    gameboard.receiveAttack(0, 2);
+
+    expect(gameboard.allShipsSunk()).toBe(true);
+  });
+
+  test('Gameboard allShipsSunk returns false not all ships are sunk', () => {
+    gameboard.placeShip(ship, 0, 0, true);
+
+    gameboard.receiveAttack(0, 0);
+    gameboard.receiveAttack(0, 1);
+    gameboard.receiveAttack(0, 2);
+    const ship1 = new Ship(2);
+    gameboard.placeShip(ship1, 3, 3, false);
+    expect(gameboard.allShipsSunk()).toBe(false);
+  });
+
+  test('Gameboard allShipsSunk returns false if no ships are present', () => {
+    expect(gameboard.allShipsSunk()).toBe(false);
+  });
+
+  test('Gameboard allShipsSunk returns false with varying lengths of ships in which some are sunk', () => {
+    gameboard.placeShip(ship, 0, 0, true);
+    gameboard.receiveAttack(0, 0);
+    gameboard.receiveAttack(0, 1);
+    gameboard.receiveAttack(0, 2);
+
+    const ship1 = new Ship(2);
+    gameboard.placeShip(ship1, 3, 3, false);
+    gameboard.receiveAttack(3, 3);
+    gameboard.receiveAttack(4, 3);
+
+    const ship2 = new Ship(4);
+    gameboard.placeShip(ship2, 8, 5, true);
+    gameboard.receiveAttack(8, 5);
+
+    expect(gameboard.allShipsSunk()).toBe(false);
   });
 });

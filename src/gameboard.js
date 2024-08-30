@@ -45,6 +45,8 @@ export default class Gameboard {
         this.board[startX + i][startY] = ship;
       }
     }
+
+    this.ships.push(ship);
   }
 
   receiveAttack(x, y) {
@@ -64,5 +66,10 @@ export default class Gameboard {
     } else {
       this.missedAttacks.push([x, y]);
     }
+  }
+
+  allShipsSunk() {
+    if (this.ships.length === 0) return false;
+    return this.ships.every((ship) => ship.isSunk());
   }
 }
