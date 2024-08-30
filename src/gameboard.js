@@ -46,4 +46,23 @@ export default class Gameboard {
       }
     }
   }
+
+  receiveAttack(x, y) {
+    if (x < 0 || x >= this.board.length || y < 0 || y >= this.board[0].length)
+      throw new Error('Not a valid attack!');
+
+    if (
+      this.board[x][y] === 'hit' ||
+      this.missedAttacks.some((coord) => coord[0] === x && coord[1] === y)
+    )
+      throw new Error('Position already attacked!');
+
+    if (this.board[x][y] !== '') {
+      const ship = this.board[x][y];
+      ship.hit();
+      this.board[x][y] = 'hit';
+    } else {
+      this.missedAttacks.push([x, y]);
+    }
+  }
 }
