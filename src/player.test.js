@@ -28,4 +28,12 @@ describe('Player Class', () => {
     player1.attack(player2, 1, 1);
     expect(player2.gameboard.board[1][1]).toBe('miss');
   });
+
+  test('Computer player performs random attack', () => {
+    const computer = new Player('computer');
+    const opponent = new Player('real');
+    jest.spyOn(opponent.gameboard, 'receiveAttack');
+    computer.randomAttack(opponent);
+    expect(opponent.gameboard.receiveAttack).toHaveBeenCalled();
+  });
 });
