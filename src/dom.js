@@ -2,25 +2,39 @@ const dom = {
   init() {
     // Clear existing content
     document.body.innerHTML = '';
+
+    // Create heading section
+    const heading = document.createElement('div');
+    heading.classList.add('heading');
+    heading.textContent = 'battlesh!p';
+    document.body.appendChild(heading);
+
     // Create and setup player and computer game boards in the DOM
+    const boardContainer = document.createElement('div');
+    boardContainer.classList.add('board-container');
+
     const playerBoardContainer = document.createElement('div');
     playerBoardContainer.classList.add('real-board-container');
     const computerBoardContainer = document.createElement('div');
     computerBoardContainer.classList.add('computer-board-container');
 
-    document.body.appendChild(playerBoardContainer);
-    document.body.appendChild(computerBoardContainer);
+    boardContainer.appendChild(playerBoardContainer);
+    boardContainer.appendChild(computerBoardContainer);
+    document.body.appendChild(boardContainer);
 
     // Create game controls
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.classList.add('buttons-container');
     const startGame = document.createElement('button');
     startGame.classList.add('start-game-btn');
     startGame.textContent = 'Start Game!';
-    document.body.appendChild(startGame);
+    buttonsContainer.appendChild(startGame);
 
     const resetGame = document.createElement('button');
     resetGame.classList.add('reset-game-btn');
     resetGame.textContent = 'Reset Game!';
-    document.body.appendChild(resetGame);
+    buttonsContainer.appendChild(resetGame);
+    document.body.appendChild(buttonsContainer);
 
     // Setup event listeners
 
@@ -36,7 +50,7 @@ const dom = {
 
     // Render board cells
     board.forEach((row, rowIndex) => {
-      board.forEach((cell, colIndex) => {
+      row.forEach((cell, colIndex) => {
         const cellElement = document.createElement('div');
         cellElement.classList.add('board-cell');
 

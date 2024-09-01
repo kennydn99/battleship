@@ -26,6 +26,7 @@ export default class Game {
 
     // then render
     dom.renderBoard(this.player.gameboard.board, this.player.type);
+    dom.renderBoard(this.computer.gameboard.board, this.computer.type);
   }
 
   playTurn(x, y) {
