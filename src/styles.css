@@ -1,0 +1,18 @@
+.real-board-container {
+  border: 1px blue solid;
+}
+.real-board {
+  display: grid;
+  grid-template-columns: repeat(10, 20px);
+  grid-template-rows: repeat(10, 20px);
+}
+
+.computer-board-container {
+  border: 1px red solid;
+}
+
+.board-cell {
+  border: 1px orange solid;
+  width: 20px;
+  height: 20px;
+}
