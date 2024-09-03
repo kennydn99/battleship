@@ -1,6 +1,4 @@
 import './styles.css';
-import Game from './game';
+import dom from './dom';
 
-const game = new Game();
-game.startGame();
-game.setupBoards();
+dom.init();

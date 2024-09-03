@@ -1,4 +1,8 @@
+import Game from './game';
+
 const dom = {
+  game: null,
+
   init() {
     // Clear existing content
     document.body.innerHTML = '';
@@ -37,10 +41,7 @@ const dom = {
     document.body.appendChild(buttonsContainer);
 
     // Setup event listeners
-
-    // Display the initial state of the game
-    // renderBoard(playerBoard, 'player');
-    // renderBoard(computerBoard, 'computer');
+    this.setupButtonEventListeners();
   },
 
   renderBoard(board, playerType) {
@@ -74,6 +75,46 @@ const dom = {
     );
     parentElement.innerHTML = ''; // Clear previous content
     parentElement.appendChild(boardContainer);
+  },
+
+  setupButtonEventListeners() {
+    const startButton = document.querySelector('.start-game-btn');
+    const resetButton = document.querySelector('.reset-game-btn');
+
+    startButton.addEventListener('click', () => this.startGame());
+    resetButton.addEventListener('click', () => this.resetGame());
+  },
+
+  setupBoardEventListeners() {
+    const computerBoardCells = document.querySelectorAll(
+      '.computer-board-container .board-cell'
+    );
+
+    computerBoardCells.forEach((cell) => {
+      cell.addEventListener('click', (event) => this.handleBoardClick(event));
+    });
+  },
+
+  handleBoardClick(event) {
+    const x = parseInt(event.target.dataset.row, 10);
+    const y = parseInt(event.target.dataset.col, 10);
+    console.log('x:', x, 'y:', y);
+    this.game.playTurn(x, y);
+  },
+
+  startGame() {
+    this.game = new Game();
+    this.game.startGame();
+    this.renderBoard(this.game.player.gameboard.board, this.game.player.type);
+    this.renderBoard(
+      this.game.computer.gameboard.board,
+      this.game.computer.type
+    );
+    this.setupBoardEventListeners();
+  },
+
+  resetGame() {
+    this.init();
   },
 };
 

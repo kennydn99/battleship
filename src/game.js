@@ -1,6 +1,5 @@
 import Player from './player';
 import Ship from './ship';
-import dom from './dom';
 
 export default class Game {
   constructor() {
@@ -13,8 +12,8 @@ export default class Game {
     this.player = new Player('real');
     this.computer = new Player('computer');
     this.currentTurn = this.player;
-    // Render initial gameboards in DOM
-    dom.init();
+    //  initial gameboards in DOM
+    this.setupBoards();
   }
 
   setupBoards() {
@@ -23,10 +22,6 @@ export default class Game {
     this.player.gameboard.placeShip(playerShip, 0, 0, true);
     const computerShip = new Ship(3);
     this.computer.gameboard.placeShip(computerShip, 9, 0, true);
-
-    // then render
-    dom.renderBoard(this.player.gameboard.board, this.player.type);
-    dom.renderBoard(this.computer.gameboard.board, this.computer.type);
   }
 
   playTurn(x, y) {

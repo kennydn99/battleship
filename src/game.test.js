@@ -42,7 +42,6 @@ describe('Game Class', () => {
 
   test('Game should declare game over when all ships are sunk', () => {
     game.startGame();
-    game.setupBoards();
 
     const playerBoard = game.player.gameboard;
     // Simulate sinking all ships of one player
@@ -57,7 +56,6 @@ describe('Game Class', () => {
 
   test('Game should not declare game over when not all ships are sunk', () => {
     game.startGame();
-    game.setupBoards();
     const playerBoard = game.player.gameboard;
     // Simulate sinking all ships of one player
     playerBoard.receiveAttack(0, 0);
@@ -70,7 +68,6 @@ describe('Game Class', () => {
 
   test('Game should correctly identify the winner', () => {
     game.startGame();
-    game.setupBoards();
     const playerBoard = game.player.gameboard;
     // Simulate sinking all ships of one player
     playerBoard.receiveAttack(0, 0);
