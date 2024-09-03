@@ -75,6 +75,8 @@ const dom = {
     );
     parentElement.innerHTML = ''; // Clear previous content
     parentElement.appendChild(boardContainer);
+
+    this.setupBoardEventListeners();
   },
 
   setupButtonEventListeners() {
@@ -100,6 +102,10 @@ const dom = {
     const y = parseInt(event.target.dataset.col, 10);
     console.log('x:', x, 'y:', y);
     this.game.playTurn(x, y);
+    // this.renderBoard(
+    //   this.game.computer.gameboard.board,
+    //   this.game.computer.type
+    // );
   },
 
   startGame() {
@@ -110,10 +116,10 @@ const dom = {
       this.game.computer.gameboard.board,
       this.game.computer.type
     );
-    this.setupBoardEventListeners();
   },
 
   resetGame() {
+    this.game = null;
     this.init();
   },
 };

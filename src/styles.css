@@ -44,6 +44,14 @@ body {
   background-color: #4caf50; /* Occupied cell color */
 }
 
+.cell-hit {
+  background-color: #e44d4d; /* Occupied cell color */
+}
+
+.cell-miss {
+  background-color: #5994e2; /* Occupied cell color */
+}
+
 /* Button container styles */
 button {
   margin: 10px; /* Space between buttons */

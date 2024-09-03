@@ -43,4 +43,50 @@ describe('DOM module', () => {
     expect(cells[2].classList.contains('cell-hit')).toBe(true);
     expect(cells[3].classList.contains('cell-miss')).toBe(true);
   });
+
+  test('startGame() initializes the game correctly', () => {
+    // Simulate button click to start the game
+    const startButton = document.querySelector('.start-game-btn');
+    startButton.click();
+
+    // Check if the game object is initialized
+    expect(DOM.game).not.toBeNull();
+    expect(DOM.game.player).not.toBeNull();
+    expect(DOM.game.computer).not.toBeNull();
+
+    // Check if boards are rendered correctly
+    expect(document.querySelector('.real-board')).not.toBeNull();
+    expect(document.querySelector('.computer-board')).not.toBeNull();
+  });
+
+  test('handleBoardClick() triggers player attack correctly', () => {
+    // Mock the game object
+    DOM.game = {
+      playTurn: jest.fn(),
+    };
+
+    // Simulate a click event
+    const cell = document.createElement('div');
+    cell.dataset.row = '1';
+    cell.dataset.col = '1';
+    DOM.handleBoardClick({ target: cell });
+
+    // Check if playTurn is called with correct arguments
+    expect(DOM.game.playTurn).toHaveBeenCalledWith(1, 1);
+  });
+
+  test('resetGame() resets the game and DOM correctly', () => {
+    // Simulate button click to reset the game
+    const resetButton = document.querySelector('.reset-game-btn');
+    resetButton.click();
+
+    // Check if DOM is reset
+    expect(document.querySelector('.real-board-container').innerHTML).toBe('');
+    expect(document.querySelector('.computer-board-container').innerHTML).toBe(
+      ''
+    );
+
+    // Check if game state is reset
+    expect(DOM.game).toBeNull();
+  });
 });
