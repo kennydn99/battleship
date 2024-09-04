@@ -76,7 +76,7 @@ const dom = {
     parentElement.innerHTML = ''; // Clear previous content
     parentElement.appendChild(boardContainer);
 
-    this.setupBoardEventListeners();
+    // this.setupBoardEventListeners();
   },
 
   setupButtonEventListeners() {
@@ -100,12 +100,20 @@ const dom = {
   handleBoardClick(event) {
     const x = parseInt(event.target.dataset.row, 10);
     const y = parseInt(event.target.dataset.col, 10);
-    console.log('x:', x, 'y:', y);
+    // Player turn
     this.game.playTurn(x, y);
-    // this.renderBoard(
-    //   this.game.computer.gameboard.board,
-    //   this.game.computer.type
-    // );
+    this.renderBoard(
+      this.game.computer.gameboard.board,
+      this.game.computer.type
+    );
+
+    // delay computer turn
+    setTimeout(() => {
+      this.game.playTurn();
+      this.renderBoard(this.game.player.gameboard.board, this.game.player.type);
+    }, 1000);
+
+    this.setupBoardEventListeners();
   },
 
   startGame() {
@@ -116,6 +124,8 @@ const dom = {
       this.game.computer.gameboard.board,
       this.game.computer.type
     );
+
+    this.setupBoardEventListeners();
   },
 
   resetGame() {

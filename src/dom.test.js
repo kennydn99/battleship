@@ -60,9 +60,33 @@ describe('DOM module', () => {
   });
 
   test('handleBoardClick() triggers player attack correctly', () => {
-    // Mock the game object
+    document.body.innerHTML = `
+    <div class="player-board-container"></div>
+    <div class="computer-board-container"></div>
+  `;
+    // Mock the game object structure
     DOM.game = {
       playTurn: jest.fn(),
+      computer: {
+        gameboard: {
+          board: [
+            ['', '', ''],
+            ['', '', ''],
+            ['', '', ''],
+          ],
+        },
+        type: 'computer',
+      },
+      player: {
+        gameboard: {
+          board: [
+            ['', '', ''],
+            ['', '', ''],
+            ['', '', ''],
+          ],
+        },
+        type: 'player',
+      },
     };
 
     // Simulate a click event
@@ -71,8 +95,11 @@ describe('DOM module', () => {
     cell.dataset.col = '1';
     DOM.handleBoardClick({ target: cell });
 
-    // Check if playTurn is called with correct arguments
+    // Check if playTurn is called with correct arguments for the player
     expect(DOM.game.playTurn).toHaveBeenCalledWith(1, 1);
+
+    // Check if playTurn is called again (for the computer's turn)
+    expect(DOM.game.playTurn).toHaveBeenCalledTimes(2);
   });
 
   test('resetGame() resets the game and DOM correctly', () => {

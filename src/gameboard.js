@@ -52,8 +52,10 @@ export default class Gameboard {
     if (x < 0 || x >= this.board.length || y < 0 || y >= this.board[0].length)
       throw new Error('Not a valid attack!');
 
-    if (this.board[x][y] === 'hit' || this.board[x][y] === 'miss')
+    if (this.board[x][y] === 'hit' || this.board[x][y] === 'miss') {
+      console.log(`position this.board[${x}][${y}] = ${this.board[x][y]}`);
       throw new Error('Position already attacked!');
+    }
 
     if (this.board[x][y] !== '') {
       const ship = this.board[x][y];

@@ -36,4 +36,18 @@ describe('Player Class', () => {
     computer.randomAttack(opponent);
     expect(opponent.gameboard.receiveAttack).toHaveBeenCalled();
   });
+
+  test('randomAttack should reduce available positions by one after each attack', () => {
+    const opponent = new Player('real');
+    const player = new Player('computer');
+    const initialAvailablePositions = player.availablePositions.length;
+
+    // Perform a random attack
+    player.randomAttack(opponent);
+
+    // Expect the available positions to decrease by one
+    expect(player.availablePositions.length).toBe(
+      initialAvailablePositions - 1
+    );
+  });
 });
