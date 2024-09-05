@@ -75,8 +75,6 @@ const dom = {
     );
     parentElement.innerHTML = ''; // Clear previous content
     parentElement.appendChild(boardContainer);
-
-    // this.setupBoardEventListeners();
   },
 
   setupButtonEventListeners() {
@@ -98,8 +96,15 @@ const dom = {
   },
 
   handleBoardClick(event) {
-    const x = parseInt(event.target.dataset.row, 10);
-    const y = parseInt(event.target.dataset.col, 10);
+    const clickedCell = event.target;
+    const x = parseInt(clickedCell.dataset.row, 10);
+    const y = parseInt(clickedCell.dataset.col, 10);
+    // Check if position is already attacked
+    const { board } = this.game.computer.gameboard;
+    if (board[x][y] === 'hit' || board[x][y] === 'miss') {
+      console.log('Position already attacked!');
+      return; // Exit early if this position was already attacked
+    }
     // Player turn
     console.log('Player attacking x:', x, 'y:', y);
     this.game.playTurn(x, y);
@@ -107,6 +112,7 @@ const dom = {
       this.game.computer.gameboard.board,
       this.game.computer.type
     );
+    clickedCell.removeEventListener('click', this.handleBoardClick);
 
     // delay computer turn
     setTimeout(() => {

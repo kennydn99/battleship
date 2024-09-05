@@ -32,7 +32,6 @@ export default class Game {
 
   handlePlayerAttack(x, y) {
     this.player.attack(this.computer, x, y);
-    // Update DOM to reflect changes
     if (this.isGameOver()) {
       this.endGame();
     } else {
@@ -42,7 +41,6 @@ export default class Game {
 
   handleComputerAttack() {
     this.computer.randomAttack(this.player);
-    // Update DOM to reflect changes
     if (this.isGameOver()) {
       this.endGame();
     } else {
