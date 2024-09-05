@@ -60,6 +60,8 @@ describe('DOM module', () => {
   });
 
   test('handleBoardClick() triggers player attack correctly', () => {
+    jest.useFakeTimers();
+
     document.body.innerHTML = `
     <div class="player-board-container"></div>
     <div class="computer-board-container"></div>
@@ -97,9 +99,10 @@ describe('DOM module', () => {
 
     // Check if playTurn is called with correct arguments for the player
     expect(DOM.game.playTurn).toHaveBeenCalledWith(1, 1);
-
+    jest.advanceTimersByTime(500);
     // Check if playTurn is called again (for the computer's turn)
     expect(DOM.game.playTurn).toHaveBeenCalledTimes(2);
+    jest.useRealTimers();
   });
 
   test('resetGame() resets the game and DOM correctly', () => {

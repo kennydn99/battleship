@@ -101,6 +101,7 @@ const dom = {
     const x = parseInt(event.target.dataset.row, 10);
     const y = parseInt(event.target.dataset.col, 10);
     // Player turn
+    console.log('Player attacking x:', x, 'y:', y);
     this.game.playTurn(x, y);
     this.renderBoard(
       this.game.computer.gameboard.board,
@@ -111,9 +112,9 @@ const dom = {
     setTimeout(() => {
       this.game.playTurn();
       this.renderBoard(this.game.player.gameboard.board, this.game.player.type);
-    }, 1000);
 
-    this.setupBoardEventListeners();
+      this.setupBoardEventListeners();
+    }, 500);
   },
 
   startGame() {

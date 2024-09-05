@@ -18,6 +18,8 @@ export default class Player {
       // Make computer smarter later
       opponent.gameboard.receiveAttack(x, y);
     }
+
+    this.updateAvailablePositions(x, y);
   }
 
   initializeAvailablePositions() {
@@ -30,7 +32,21 @@ export default class Player {
     return positions;
   }
 
+  updateAvailablePositions(x, y) {
+    // Find the index of the attacked position and remove it from availablePositions
+    const index = this.availablePositions.findIndex(
+      (pos) => pos[0] === x && pos[1] === y
+    );
+    if (index !== -1) {
+      this.availablePositions.splice(index, 1);
+    }
+  }
+
   randomAttack(opponent) {
+    if (this.availablePositions.length === 0) {
+      console.log('No available positions left to attack.');
+      return;
+    }
     const randomIndex = Math.floor(
       Math.random() * this.availablePositions.length
     );
@@ -38,7 +54,5 @@ export default class Player {
 
     console.log(`Computer randomly attacking x:${x}, y:${y}`);
     this.attack(opponent, x, y);
-
-    this.availablePositions.splice(randomIndex, 1);
   }
 }
