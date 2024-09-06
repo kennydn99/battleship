@@ -99,6 +99,7 @@ const dom = {
     const clickedCell = event.target;
     const x = parseInt(clickedCell.dataset.row, 10);
     const y = parseInt(clickedCell.dataset.col, 10);
+
     // Check if position is already attacked
     const { board } = this.game.computer.gameboard;
     if (board[x][y] === 'hit' || board[x][y] === 'miss') {
@@ -106,7 +107,6 @@ const dom = {
       return; // Exit early if this position was already attacked
     }
     // Player turn
-    console.log('Player attacking x:', x, 'y:', y);
     this.game.playTurn(x, y);
     this.renderBoard(
       this.game.computer.gameboard.board,
@@ -114,13 +114,30 @@ const dom = {
     );
     clickedCell.removeEventListener('click', this.handleBoardClick);
 
+    // Check if game is over after player turn
+    if (this.checkForGameOver()) return;
+
     // delay computer turn
     setTimeout(() => {
       this.game.playTurn();
       this.renderBoard(this.game.player.gameboard.board, this.game.player.type);
-
-      this.setupBoardEventListeners();
+      if (!this.checkForGameOver()) this.setupBoardEventListeners();
     }, 500);
+  },
+
+  checkForGameOver() {
+    if (this.game.isGameOver()) {
+      this.handleGameOver();
+      return true; // Return true to indicate the game is over
+    }
+    return false; // Return false to indicate the game is not over
+  },
+
+  handleGameOver() {
+    const boardContainer = document.querySelector('.board-container');
+    // boardContainer.innerHTML = ''
+    const winner = this.game.endGame().type === 'real' ? 'You' : 'Computer';
+    boardContainer.textContent = `GAME OVER! ${winner} won!`;
   },
 
   startGame() {

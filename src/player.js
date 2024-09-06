@@ -52,7 +52,6 @@ export default class Player {
     );
     const [x, y] = this.availablePositions[randomIndex];
 
-    console.log(`Computer randomly attacking x:${x}, y:${y}`);
     this.attack(opponent, x, y);
   }
 }
