@@ -135,9 +135,42 @@ const dom = {
 
   handleGameOver() {
     const boardContainer = document.querySelector('.board-container');
-    // boardContainer.innerHTML = ''
     const winner = this.game.endGame().type === 'real' ? 'You' : 'Computer';
-    boardContainer.textContent = `GAME OVER! ${winner} won!`;
+
+    // Create modal overlay
+    const overlay = document.createElement('div');
+    overlay.classList.add('modal-overlay');
+
+    // Create modal content
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+
+    const winnerText = document.createElement('p');
+    winnerText.textContent = `GAME OVER! ${winner} won!`;
+
+    const playAgainButton = document.createElement('button');
+    playAgainButton.textContent = 'Play Again';
+    playAgainButton.addEventListener('click', () => {
+      document.body.removeChild(overlay); // Remove modal
+      this.resetGame(); // Reset game logic
+    });
+
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'Close';
+    closeButton.addEventListener('click', () => {
+      document.body.removeChild(overlay); // Close modal
+    });
+
+    // Append elements to modal
+    modal.appendChild(winnerText);
+    modal.appendChild(playAgainButton);
+    modal.appendChild(closeButton);
+
+    // Append modal to overlay
+    overlay.appendChild(modal);
+
+    // Append overlay to the body
+    document.body.appendChild(overlay);
   },
 
   startGame() {
