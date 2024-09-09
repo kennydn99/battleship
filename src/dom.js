@@ -199,6 +199,10 @@ const dom = {
     // render blank player gameboard
     this.renderBoard(this.game.player.gameboard.board, this.game.player.type);
 
+    // Wrapper for ship selection
+    const shipContainer = document.createElement('div');
+    shipContainer.classList.add('ship-container');
+
     // Create and render ship selection
     const shipSelection = document.createElement('div');
     shipSelection.classList.add('ship-select');
@@ -230,15 +234,16 @@ const dom = {
 
       shipSelection.appendChild(shipElement);
     });
+    shipContainer.appendChild(shipSelection);
 
     const rotateButton = document.createElement('button');
     rotateButton.textContent = 'Rotate';
     rotateButton.addEventListener('click', () => {
       this.rotateShips(); // Rotate ships logic
     });
-    shipSelection.appendChild(rotateButton);
+    shipContainer.appendChild(rotateButton);
 
-    boardContainer.appendChild(shipSelection);
+    boardContainer.appendChild(shipContainer);
     // Enable dropping on player board
     this.setupPlayerBoardForShipPlacement();
   },
@@ -299,6 +304,24 @@ const dom = {
 
   rotateShips() {
     this.isHorizontal = !this.isHorizontal; // Toggle vertical or horizontal placement
+
+    // Rotate ships in the ship selection
+    const shipSelection = document.querySelector('.ship-select');
+    const ships = document.querySelectorAll('.ship');
+
+    if (!this.isHorizontal) {
+      shipSelection.style.flexDirection = 'row';
+      ships.forEach((ship) => {
+        const shipElement = ship; // Create a new reference
+        shipElement.style.flexDirection = 'column';
+      });
+    } else {
+      shipSelection.style.flexDirection = 'column';
+      ships.forEach((ship) => {
+        const shipElement = ship; // Create a new reference
+        shipElement.style.flexDirection = 'row';
+      });
+    }
   },
 };
 

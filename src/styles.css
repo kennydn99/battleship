@@ -121,6 +121,13 @@ button:hover {
   background-color: #0056b3;
 }
 
+.ship-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .ship-select {
   display: flex;
   flex-direction: column;
@@ -132,6 +139,7 @@ button:hover {
   display: flex;
   flex-direction: row;
   margin-bottom: 10px;
+  margin-right: 8px;
   cursor: grab;
 }
 
@@ -143,6 +151,7 @@ button:hover {
   border: 1px solid black;
   display: inline-block;
   margin-right: 2px;
+  margin-bottom: 2px;
 }
 
 .ship.dragging {
