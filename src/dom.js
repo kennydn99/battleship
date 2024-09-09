@@ -1,7 +1,10 @@
 import Game from './game';
+import Ship from './ship';
 
 const dom = {
   game: null,
+
+  isHorizontal: true,
 
   init() {
     // Clear existing content
@@ -134,7 +137,6 @@ const dom = {
   },
 
   handleGameOver() {
-    const boardContainer = document.querySelector('.board-container');
     const winner = this.game.endGame().type === 'real' ? 'You' : 'Computer';
 
     // Create modal overlay
@@ -176,18 +178,127 @@ const dom = {
   startGame() {
     this.game = new Game();
     this.game.startGame();
-    this.renderBoard(this.game.player.gameboard.board, this.game.player.type);
-    this.renderBoard(
-      this.game.computer.gameboard.board,
-      this.game.computer.type
-    );
+    this.renderSetupGame();
+    // this.renderBoard(this.game.player.gameboard.board, this.game.player.type);
+    // this.renderBoard(
+    //   this.game.computer.gameboard.board,
+    //   this.game.computer.type
+    // );
 
-    this.setupBoardEventListeners();
+    // this.setupBoardEventListeners();
   },
 
   resetGame() {
     this.game = null;
     this.init();
+  },
+
+  renderSetupGame() {
+    const boardContainer = document.querySelector('.board-container');
+
+    // render blank player gameboard
+    this.renderBoard(this.game.player.gameboard.board, this.game.player.type);
+
+    // Create and render ship selection
+    const shipSelection = document.createElement('div');
+    shipSelection.classList.add('ship-select');
+
+    // Create ships
+    const shipSizes = [5, 4, 3, 3, 2];
+
+    shipSizes.forEach((size, index) => {
+      const shipElement = document.createElement('div');
+      shipElement.classList.add('ship');
+      shipElement.dataset.size = size;
+      shipElement.draggable = true;
+      shipElement.id = `ship-${size}-${index}`;
+
+      // Create each segment of the ship to look like board cells
+      for (let i = 0; i < size; i++) {
+        const shipSegment = document.createElement('div');
+        shipSegment.classList.add('ship-cell');
+        shipElement.appendChild(shipSegment);
+      }
+
+      // Add drag event listeners
+      shipElement.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', size);
+
+        // Store the dragged element reference
+        e.dataTransfer.setData('shipElementId', e.target.id);
+      });
+
+      shipSelection.appendChild(shipElement);
+    });
+
+    const rotateButton = document.createElement('button');
+    rotateButton.textContent = 'Rotate';
+    rotateButton.addEventListener('click', () => {
+      this.rotateShips(); // Rotate ships logic
+    });
+    shipSelection.appendChild(rotateButton);
+
+    boardContainer.appendChild(shipSelection);
+    // Enable dropping on player board
+    this.setupPlayerBoardForShipPlacement();
+  },
+
+  setupPlayerBoardForShipPlacement() {
+    const playerBoardCells = document.querySelectorAll(
+      '.real-board .board-cell'
+    );
+
+    playerBoardCells.forEach((cell) => {
+      cell.addEventListener('dragover', (e) => {
+        e.preventDefault(); // Allow drop
+      });
+
+      cell.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const shipSize = e.dataTransfer.getData('text/plain');
+        const row = parseInt(e.target.dataset.row, 10);
+        const col = parseInt(e.target.dataset.col, 10);
+
+        try {
+          // Place the ship at the dropped coordinates
+          const shipPlaced = this.game.player.gameboard.placeShip(
+            new Ship(parseInt(shipSize, 10)),
+            row,
+            col,
+            this.isHorizontal // Determine if the ship is vertical
+          );
+
+          if (shipPlaced) {
+            // Remove selected ship from ship selection
+            const shipElementId = e.dataTransfer.getData('shipElementId');
+            const shipNode = document.getElementById(shipElementId);
+            if (shipNode) {
+              shipNode.remove(); // Remove the ship from the selection
+            }
+            // Re-render board with ship placed
+            this.renderBoard(
+              this.game.player.gameboard.board,
+              this.game.player.type
+            );
+
+            this.setupPlayerBoardForShipPlacement();
+
+            const remainingShips =
+              document.querySelectorAll('.ship-select .ship');
+            if (remainingShips.length === 0) {
+              console.log('All ships placed! Ready to start the game.');
+              // Optionally, you can disable further placements or start the game
+            }
+          }
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+    });
+  },
+
+  rotateShips() {
+    this.isHorizontal = !this.isHorizontal; // Toggle vertical or horizontal placement
   },
 };
 

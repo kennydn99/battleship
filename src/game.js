@@ -13,7 +13,7 @@ export default class Game {
     this.computer = new Player('computer');
     this.currentTurn = this.player;
     //  initial gameboards in DOM
-    this.setupBoards();
+    // this.setupBoards();
   }
 
   setupBoards() {

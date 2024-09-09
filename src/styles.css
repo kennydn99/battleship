@@ -120,3 +120,31 @@ button:hover {
 .modal button:hover {
   background-color: #0056b3;
 }
+
+.ship-select {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+/* Style for each ship container */
+.ship {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  cursor: grab;
+}
+
+/* Style for each segment of the ship to match board cells */
+.ship-cell {
+  width: 38px; /* Match the width of a board cell */
+  height: 38px; /* Match the height of a board cell */
+  background-color: #4caf50; /* Or whatever matches your board cell style */
+  border: 1px solid black;
+  display: inline-block;
+  margin-right: 2px;
+}
+
+.ship.dragging {
+  opacity: 0.5;
+}
