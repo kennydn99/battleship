@@ -179,13 +179,10 @@ const dom = {
     this.game = new Game();
     this.game.startGame();
     this.renderSetupGame();
-    // this.renderBoard(this.game.player.gameboard.board, this.game.player.type);
-    // this.renderBoard(
-    //   this.game.computer.gameboard.board,
-    //   this.game.computer.type
-    // );
 
-    // this.setupBoardEventListeners();
+    // remove start game btn
+    const startButton = document.querySelector('.start-game-btn');
+    startButton.remove();
   },
 
   resetGame() {
@@ -237,6 +234,7 @@ const dom = {
     shipContainer.appendChild(shipSelection);
 
     const rotateButton = document.createElement('button');
+    rotateButton.classList.add('rotate-btn');
     rotateButton.textContent = 'Rotate';
     rotateButton.addEventListener('click', () => {
       this.rotateShips(); // Rotate ships logic
@@ -293,6 +291,15 @@ const dom = {
             if (remainingShips.length === 0) {
               console.log('All ships placed! Ready to start the game.');
               // Optionally, you can disable further placements or start the game
+              const rotateButton = document.querySelector('.rotate-btn');
+              rotateButton.remove();
+
+              const playButton = document.createElement('button');
+              playButton.textContent = 'Play Game!';
+              playButton.addEventListener('click', () => this.playGame());
+
+              const shipSelection = document.querySelector('.ship-select');
+              shipSelection.appendChild(playButton);
             }
           }
         } catch (error) {
@@ -300,6 +307,21 @@ const dom = {
         }
       });
     });
+  },
+
+  playGame() {
+    // hide ship container
+    const shipContainer = document.querySelector('.ship-container');
+    shipContainer.remove();
+    // place computer ships
+
+    // render computer board
+    this.renderBoard(
+      this.game.computer.gameboard.board,
+      this.game.computer.type
+    );
+
+    this.setupBoardEventListeners();
   },
 
   rotateShips() {
