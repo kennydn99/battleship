@@ -1,7 +1,8 @@
 /**
  * @jest-environment jsdom
  */
-import Game from './game';
+import Game from '../game';
+import Ship from '../ship';
 
 describe('Game Class', () => {
   let game;
@@ -44,6 +45,7 @@ describe('Game Class', () => {
     game.startGame();
 
     const playerBoard = game.player.gameboard;
+    playerBoard.placeShip(new Ship(3), 0, 0, true);
     // Simulate sinking all ships of one player
     playerBoard.receiveAttack(0, 0);
     playerBoard.receiveAttack(0, 1);
@@ -68,14 +70,17 @@ describe('Game Class', () => {
 
   test('Game should correctly identify the winner', () => {
     game.startGame();
-    const playerBoard = game.player.gameboard;
-    // Simulate sinking all ships of one player
-    playerBoard.receiveAttack(0, 0);
-    playerBoard.receiveAttack(0, 1);
-    playerBoard.receiveAttack(0, 2);
+    const computerBoard = game.computer.gameboard;
 
-    // Check if the winner was correctly identified
-    expect(game.endGame()).toBe(game.computer);
-    // Optionally, check if DOM.displayGameOver was called
+    // Mock placing ships to ensure they exist in these locations
+    computerBoard.placeShip(new Ship(3), 0, 0, true); // Place a ship horizontally at (0,0)
+
+    // Simulate sinking all ships of the computer
+    computerBoard.receiveAttack(0, 0);
+    computerBoard.receiveAttack(0, 1);
+    computerBoard.receiveAttack(0, 2);
+
+    // Check if the player is the winner
+    expect(game.endGame()).toBe(game.player);
   });
 });

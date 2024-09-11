@@ -1,5 +1,5 @@
-import Player from './player';
-import Ship from './ship';
+import Player from '../player';
+import Ship from '../ship';
 
 describe('Player Class', () => {
   test('Player class is defined', () => {

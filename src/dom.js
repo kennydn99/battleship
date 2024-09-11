@@ -106,7 +106,6 @@ const dom = {
     // Check if position is already attacked
     const { board } = this.game.computer.gameboard;
     if (board[x][y] === 'hit' || board[x][y] === 'miss') {
-      console.log('Position already attacked!');
       return; // Exit early if this position was already attacked
     }
     // Player turn
@@ -289,7 +288,6 @@ const dom = {
             const remainingShips =
               document.querySelectorAll('.ship-select .ship');
             if (remainingShips.length === 0) {
-              console.log('All ships placed! Ready to start the game.');
               // Optionally, you can disable further placements or start the game
               const rotateButton = document.querySelector('.rotate-btn');
               rotateButton.remove();

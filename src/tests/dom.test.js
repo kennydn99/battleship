@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import DOM from './dom';
+import DOM from '../dom';
 
 describe('DOM module', () => {
   beforeEach(() => {
@@ -17,6 +17,7 @@ describe('DOM module', () => {
 
   test('init() sets up the initial game UI correctly', () => {
     // Check that necessary DOM elements are created
+    expect(document.querySelector('.heading').textContent).toBe('battlesh!p');
     expect(document.querySelector('.real-board-container')).not.toBeNull();
     expect(document.querySelector('.computer-board-container')).not.toBeNull();
     expect(document.querySelector('.start-game-btn')).not.toBeNull();
@@ -44,19 +45,13 @@ describe('DOM module', () => {
     expect(cells[3].classList.contains('cell-miss')).toBe(true);
   });
 
-  test('startGame() initializes the game correctly', () => {
-    // Simulate button click to start the game
+  test('startGame() initializes the game and removes the start button', () => {
     const startButton = document.querySelector('.start-game-btn');
     startButton.click();
 
-    // Check if the game object is initialized
     expect(DOM.game).not.toBeNull();
-    expect(DOM.game.player).not.toBeNull();
-    expect(DOM.game.computer).not.toBeNull();
-
-    // Check if boards are rendered correctly
-    expect(document.querySelector('.real-board')).not.toBeNull();
-    expect(document.querySelector('.computer-board')).not.toBeNull();
+    expect(document.querySelector('.start-game-btn')).toBeNull();
+    expect(document.querySelector('.ship-container')).not.toBeNull(); // Ensure ship selection is displayed
   });
 
   test('handleBoardClick() triggers player attack correctly', () => {
@@ -69,6 +64,7 @@ describe('DOM module', () => {
     // Mock the game object structure
     DOM.game = {
       playTurn: jest.fn(),
+      isGameOver: jest.fn(),
       computer: {
         gameboard: {
           board: [
@@ -105,18 +101,41 @@ describe('DOM module', () => {
     jest.useRealTimers();
   });
 
-  test('resetGame() resets the game and DOM correctly', () => {
-    // Simulate button click to reset the game
-    const resetButton = document.querySelector('.reset-game-btn');
-    resetButton.click();
+  test('resetGame() resets the UI and game state', () => {
+    DOM.startGame(); // Simulate starting the game
+    DOM.resetGame(); // Call reset
 
-    // Check if DOM is reset
-    expect(document.querySelector('.real-board-container').innerHTML).toBe('');
-    expect(document.querySelector('.computer-board-container').innerHTML).toBe(
-      ''
-    );
-
-    // Check if game state is reset
     expect(DOM.game).toBeNull();
+    expect(document.querySelector('.start-game-btn')).not.toBeNull();
+    expect(document.querySelector('.ship-container')).toBeNull();
+  });
+
+  test('playGame() starts the game and allows interaction with the computer board', () => {
+    // Simulate setup of player ships and clicking Play Game
+    DOM.startGame();
+    DOM.playGame();
+
+    // Ensure ship container is removed and computer board is displayed
+    expect(document.querySelector('.ship-container')).toBeNull();
+    expect(document.querySelector('.computer-board')).not.toBeNull();
+
+    // Check if computer board cells are interactive
+    const computerCells = document.querySelectorAll(
+      '.computer-board .board-cell'
+    );
+    expect(computerCells.length).toBeGreaterThan(0);
+  });
+
+  test('rotateShips() toggles ship orientation in the ship selection area', () => {
+    DOM.startGame(); // Start the game to display the ship selection
+
+    const rotateButton = document.querySelector('.rotate-btn');
+    rotateButton.click(); // Simulate rotating ships
+
+    const shipSelection = document.querySelector('.ship-select');
+    expect(shipSelection.style.flexDirection).toBe('row'); // Ships should be vertical
+
+    rotateButton.click(); // Rotate again
+    expect(shipSelection.style.flexDirection).toBe('column'); // Ships should be horizontal
   });
 });

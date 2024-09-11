@@ -44,7 +44,6 @@ export default class Player {
 
   randomAttack(opponent) {
     if (this.availablePositions.length === 0) {
-      console.log('No available positions left to attack.');
       return;
     }
     const randomIndex = Math.floor(

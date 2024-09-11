@@ -7,7 +7,6 @@ export default class Gameboard {
   }
 
   placeShip(ship, startX, startY, horizontal) {
-    console.log(horizontal);
     // Check if starting coordinates are within board boundaries
     const boardHeight = this.board.length;
     const boardWidth = this.board[0].length;
@@ -55,7 +54,6 @@ export default class Gameboard {
       throw new Error('Not a valid attack!');
 
     if (this.board[x][y] === 'hit' || this.board[x][y] === 'miss') {
-      console.log(`position this.board[${x}][${y}] = ${this.board[x][y]}`);
       throw new Error('Position already attacked!');
     }
 
