@@ -314,7 +314,7 @@ const dom = {
     const shipContainer = document.querySelector('.ship-container');
     shipContainer.remove();
     // place computer ships
-
+    this.game.setupComputerBoard();
     // render computer board
     this.renderBoard(
       this.game.computer.gameboard.board,

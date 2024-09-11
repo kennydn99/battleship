@@ -12,16 +12,41 @@ export default class Game {
     this.player = new Player('real');
     this.computer = new Player('computer');
     this.currentTurn = this.player;
-    //  initial gameboards in DOM
-    // this.setupBoards();
   }
 
-  setupBoards() {
-    // place ships temporary
-    const playerShip = new Ship(3);
-    this.player.gameboard.placeShip(playerShip, 0, 0, true);
-    const computerShip = new Ship(3);
-    this.computer.gameboard.placeShip(computerShip, 9, 0, true);
+  setupComputerBoard() {
+    // Place ships randomly for computer board
+    const computerShips = [
+      new Ship(5),
+      new Ship(4),
+      new Ship(3),
+      new Ship(3),
+      new Ship(2),
+    ];
+
+    computerShips.forEach((ship) => {
+      let placed = false;
+      while (!placed) {
+        const isHorizontal = Math.random() < 0.5;
+        const startX = Math.floor(
+          Math.random() * this.computer.gameboard.board.length
+        );
+        const startY = Math.floor(
+          Math.random() * this.computer.gameboard.board[0].length
+        );
+
+        try {
+          placed = this.computer.gameboard.placeShip(
+            ship,
+            startX,
+            startY,
+            isHorizontal
+          );
+        } catch (error) {
+          placed = false;
+        }
+      }
+    });
   }
 
   playTurn(x, y) {
